@@ -20,7 +20,7 @@ const (
 	GridSize     = 50          // Size of grid cells for spatial partitioning
 	MinDistance  = 10.0        // Minimum distance for collision and force
 	K            = 1.0         // Force constant for repulsion
-	dt           = 0.01        // Time step for simulation
+	Delta        = 0.01        // Time step for simulation
 	NumParticles = 2500        // Number of particles
 	ParticleSize = MinDistance // Size of particle for rendering (square side length)
 )
@@ -50,7 +50,7 @@ func initializeParticles(n int) []Particle {
 		y := rand.Float64() * Height
 		particles[i] = Particle{
 			Pos:     [2]float64{x, y},
-			PrevPos: [2]float64{x, y}, // Start with no velocity
+			PrevPos: [2]float64{x, y},
 			Accel:   [2]float64{0, 0},
 		}
 	}
@@ -119,8 +119,8 @@ func (g *Game) updatePositions(start, end int) {
 	for i := start; i < end; i++ {
 		p := &g.particles[i]
 		// Verlet integration: new_pos = 2*pos - prev_pos + accel*dt^2
-		newX := 2*p.Pos[0] - p.PrevPos[0] + p.Accel[0]*dt*dt
-		newY := 2*p.Pos[1] - p.PrevPos[1] + p.Accel[1]*dt*dt
+		newX := 2*p.Pos[0] - p.PrevPos[0] + p.Accel[0]*Delta*Delta
+		newY := 2*p.Pos[1] - p.PrevPos[1] + p.Accel[1]*Delta*Delta
 		p.PrevPos = p.Pos
 		p.Pos = [2]float64{newX, newY}
 
